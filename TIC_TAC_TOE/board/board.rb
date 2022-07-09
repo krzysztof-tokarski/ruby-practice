@@ -1,3 +1,5 @@
+require './draw_grid.rb'
+
 class Board
   attr_reader :cells_state
   @@cells_state = Array.new(3) {Array.new(3, nil)}
@@ -21,6 +23,11 @@ class Board
     end
   end
 
+  def render_board
+    draw_grid(self.cells_state)
+  end
+
+  private
   def check_if_cells_arrays_have_only_repeats(array)
     array.each do |row|
       if !(row.include? nil) && row.uniq.size == 1
@@ -50,7 +57,6 @@ class Board
     3.times do |index|
       arrays_array.last[index] = self.cells_state[index][2-index]
     end
-    arrays_array
+    arrays_arra
   end
 end
-
