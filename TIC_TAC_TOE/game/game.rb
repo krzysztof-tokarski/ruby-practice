@@ -23,12 +23,32 @@ class Game
   end
 
   def take_input
-    print "#{@current_player.name}, please specify the row where you'd like to place your marker - enter [1] for the top one, [2] for the middle one, [3] for the bottom one: "
-    row_input = gets.chomp.to_i
+    target_cell_is_available = false
 
-    print "#{@current_player.name}, please specify a position inside the row where you'd like to place your marker - enter [1] for the left one, [2] for the middle one, [3] for the right one: "
-    row_index_input = gets.chomp.to_i
+    until target_cell_is_available
+      row_input = nil
+      until [1, 2, 3].include? row_input
+        unless row_input.nil?
+          puts 'Incorrect input!'
+        end
+        print "#{@current_player.name}, please specify the row where you'd like to place your marker - enter [1] to select the top one, [2] to select the middle one, [3] to select the bottom one: "
+        row_input = gets.chomp.to_i
+      end
 
+      row_index_input = nil
+      until [1, 2, 3].include? row_index_input do
+        unless row_index_input.nil?
+          puts 'Incorrect input!'
+        end
+        print "#{@current_player.name}, please specify a position inside the row where you'd like to place your marker - enter [1] to select the left one, [2] to select the middle one, [3] to select the right one: "
+        row_index_input = gets.chomp.to_i
+        end
+
+      target_cell_is_available = @board.check_if_cell_is_free(row_input - 1, row_index_input - 1)
+      unless target_cell_is_available
+        puts "This cell is already taken!"
+      end
+    end
     return {row_input: row_input, row_index_input: row_index_input}
   end
 
