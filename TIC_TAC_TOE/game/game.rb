@@ -2,26 +2,30 @@ require_relative '../player/player.rb'
 require_relative '../board/board.rb'
 
 class Game
-  attr_reader :player1, :player2, :board, :current_player, :game_finished
+  attr_reader :player1, :player2, :board, :current_player, :game_won, :game_tied
 
   def initialize
     new_game = prepare_new_game
     @player1 = new_game[:player1]
     @player2 = new_game[:player2]
     @board = new_game[:board]
-    @game_finished = false
+    @game_won = false
+    @game_tied = false
+
     set_current_player
 
     render_board
   end
 
   def gameplay_loop
-    until @game_finished
+    until @game_won || @game_tied
       input = take_input
       process_input(input)
     end
+    finish_game
   end
 
+  private
   def take_input
     target_cell_is_available = false
 
@@ -56,10 +60,11 @@ class Game
     @board.set_cells_state(@current_player.marker, input[:row_input] - 1, input[:row_index_input] - 1)
     render_board
     set_current_player
-    @game_finished = @board.check_if_win
+    @game_won = @board.check_if_win
+    @game_tied = @board.check_if_any_cell_is_free
+    @game_tied
   end
 
-  private
   def prepare_new_game
     print "Player 1's name is: "
     player1_name = gets.chomp
@@ -86,8 +91,12 @@ class Game
     board.render_board
   end
 
+  def finish_game
+    if game_won
+      return puts "#{current_player.name} wins!"
+    elsif game_tied
+      puts "It's a draw!"
+    end
+  end
+
 end
-
-x = Game.new
-x.gameplay_loop
-
