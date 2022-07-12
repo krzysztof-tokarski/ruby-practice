@@ -1,20 +1,29 @@
 require 'colorize'
 require_relative '../code/code.class.rb'
 require_relative '../player/computer-player.class.rb'
-require_relative '../code/color.module.rb'
+require_relative '../color.module.rb'
 
 class Game
 	include Color
-	attr_reader :code, :code_maker
+	attr_reader :code, :code_maker, :round_counter, :code_broken
 
 	def initialize
 		prepare_new_game
+		@round_counter = 1
+		@code_broken = false
 	end
 
-	def render_player_guess(player_guess)
-		player_guess.each do |color|
-			print " #{color[:name]} ".colorize( :background => color[:code])
-		end
+	def process_guess(player_guess)
+		render_player_guess(player_guess)
+		@code_broken = does_guess_break_the_code?(player_guess)
+
+		if @code_broken
+			puts 'The code was broken, the CodeBreaker wins!'
+		elsif @round_counter == 12
+			puts 'The code remains unbroken, the CodeMaker wins!'
+		else
+			@round_counter += 1
+			puts 'The CodeMaker didn\'t manage to break the code yet, we shall continue to the next round!'
 	end
 
 	private
@@ -46,18 +55,26 @@ class Game
 			# TODO
 		end
 	end
+
+	def render_player_guess(player_guess)
+		render_array_of_colors(player_guess)
+	end
+
+	def does_guess_break_the_code?(player_guess)
+		@code == player_guess
+	end
 end
 
-x = Game.new
+# x = Game.new
 
-COLORIZE_CONSTANTS = [
-	BLUE = {code: :blue, name: 'Blue'},
-	CYAN = {code: :cyan, name: 'Cyan'},
-	GREEN = {code: :green, name: 'Green'},
-	MAGENTA = {code: :magenta, name: 'Magenta'},
-	RED = {code: :red, name: 'Red'},
-	WHITE = {code: :white, name: 'White'},
-	YELLOW = {code: :yellow, name: 'Yellow'},
-]
+# COLORIZE_CONSTANTS = [
+# 	BLUE = {code: :blue, name: 'Blue'},
+# 	CYAN = {code: :cyan, name: 'Cyan'},
+# 	GREEN = {code: :green, name: 'Green'},
+# 	MAGENTA = {code: :magenta, name: 'Magenta'},
+# 	RED = {code: :red, name: 'Red'},
+# 	WHITE = {code: :white, name: 'White'},
+# 	YELLOW = {code: :yellow, name: 'Yellow'},
+# ]
 
-x.render_player_guess(COLORIZE_CONSTANTS)
+# x.render_player_guess(COLORIZE_CONSTANTS)
