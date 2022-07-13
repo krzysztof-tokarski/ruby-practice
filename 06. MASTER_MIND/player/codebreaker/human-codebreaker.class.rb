@@ -8,6 +8,7 @@ class HumanCodeBreaker < CodeBreaker
     puts 'Black, Blue, Green, Yellow'
     puts 'Possible colors:'
     render_array_of_colors(COLORIZE_CONSTANTS)
+    # TODO refactor
 
     guess_is_valid = false
     until guess_is_valid
@@ -23,8 +24,15 @@ class HumanCodeBreaker < CodeBreaker
 
   def is_guess_valid?(players_guess)
     color_names = get_array_of_raw_color_names(COLORIZE_CONSTANTS)
+    # TODO refactor
     players_guess.any? && players_guess.all? { |color| color_names.include?(color) }
   end
+
+  # def map_color_names_to_colors(players_guess)
+  #   players_guess.map do |color|
+  #     COLORIZE_CONSTANTS
+  # end
+  # TODO
 
 end
 
