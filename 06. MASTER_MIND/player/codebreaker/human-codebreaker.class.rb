@@ -22,7 +22,7 @@ class HumanCodeBreaker < CodeBreaker
   end
 
   def is_guess_valid?(players_guess)
-    color_names = COLORIZE_CONSTANTS.map { |color_hash| color_hash[:name] }
+    color_names = get_array_of_raw_color_names(COLORIZE_CONSTANTS)
     players_guess.any? && players_guess.all? { |color| color_names.include?(color) }
   end
 

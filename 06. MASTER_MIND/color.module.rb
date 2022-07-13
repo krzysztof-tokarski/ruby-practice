@@ -5,6 +5,7 @@ module Color
   COLORIZE_CONSTANTS = [
     BLUE = {code: :blue, name: 'Blue'},
     CYAN = {code: :cyan, name: 'Cyan'},
+    GRAY = {code: :light_black, 'Gray'},
     GREEN = {code: :green, name: 'Green'},
     MAGENTA = {code: :magenta, name: 'Magenta'},
     RED = {code: :red, name: 'Red'},
@@ -18,9 +19,15 @@ module Color
 		end
     puts
 	end
+
+  def get_array_of_raw_color_names(colors_array)
+    colors_array.map { |color_hash| color_hash[:name] }
+  end
 end
 
 # p Color::COLORIZE_CONSTANTS
+
+p String.color_samples
 
 # puts "This is blue".colorize(:blue)
 # puts "This is light blue".colorize(:light_blue)
